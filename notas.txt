@@ -1,0 +1,20 @@
+// Criar o projeto
+npm i -g expo-cli
+npx create-expo-app my-app
+
+// React Navigation
+npm install @react-navigation/native
+npm install @react-navigation/native-stack
+npx expo install react-native-screens react-native-safe-area-context
+npx expo install react-native-gesture-handler
+
+// React Native Paper
+npm install react-native-paper
+npm install react-native-safe-area-context
+npm install react-native-vector-icons
+
+// Axios
+npm install axios
+
+// Atalho para linha de codigo inicial
+rnfs
