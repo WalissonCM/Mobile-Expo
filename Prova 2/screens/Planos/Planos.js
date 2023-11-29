@@ -5,21 +5,21 @@ import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native
 import Toast from 'react-native-toast-message'
 
 
-export default function Clientes({ navigation }) {
+export default function Planos({ navigation }) {
 
-  const [clientes, setClientes] = useState([])
+  const [planos, setPlanos] = useState([])
   const [showModalExcluirUsuario, setShowModalExcluirUsuario] = useState(false)
-  const [clienteASerExcluida, setClienteASerExcluida] = useState(null)
+  const [planoASerExcluida, setPlanoASerExcluida] = useState(null)
 
 
   useEffect(() => {
-    loadClientes()
+    loadPlanos()
   }, [])
 
-  async function loadClientes() {
-    const response = await AsyncStorage.getItem('clientes')
-    const clientesStorage = response ? JSON.parse(response) : []
-    setClientes(clientesStorage)
+  async function loadPlanos() {
+    const response = await AsyncStorage.getItem('planos')
+    const planosStorage = response ? JSON.parse(response) : []
+    setPlanos(planosStorage)
   }
 
 
@@ -27,41 +27,41 @@ export default function Clientes({ navigation }) {
 
   const hideModal = () => setShowModalExcluirUsuario(false);
 
-  async function adicionarCliente(cliente) {
-    let novaListaClientes = clientes
-    novaListaClientes.push(cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes));
-    setClientes(novaListaClientes)
+  async function adicionarPlano(plano) {
+    let novaListaPlanos = planos
+    novaListaPlanos.push(plano)
+    await AsyncStorage.setItem('planos', JSON.stringify(novaListaPlanos));
+    setPlanos(novaListaPlanos)
   }
 
-  async function editarCliente(clienteAntiga, novosDados) {
+  async function editarPlano(planoAntiga, novosDados) {
    
-    const novaListaClientes = clientes.map(cliente => {
-      if (cliente == clienteAntiga) {
+    const novaListaPlanos = planos.map(plano => {
+      if (plano == planoAntiga) {
         return novosDados
       } else {
-        return cliente
+        return plano
       }
     })
 
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+    await AsyncStorage.setItem('planos', JSON.stringify(novaListaPlanos))
+    setPlanos(novaListaPlanos)
 
   }
 
-  async function excluirCliente(cliente) {
-    const novaListaClientes = clientes.filter(p => p !== cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+  async function excluirPlano(plano) {
+    const novaListaPlanos = planos.filter(p => p !== plano)
+    await AsyncStorage.setItem('planos', JSON.stringify(novaListaPlanos))
+    setPlanos(novaListaPlanos)
     Toast.show({
       type: 'success',
-      text1: 'Cliente excluida com sucesso!'
+      text1: 'Plano excluida com sucesso!'
     })
   }
 
-  function handleExluirCliente() {
-    excluirCliente(clienteASerExcluida)
-    setClienteASerExcluida(null)
+  function handleExluirPlano() {
+    excluirPlano(planoASerExcluida)
+    setPlanoASerExcluida(null)
     hideModal()
   }
 
@@ -69,11 +69,11 @@ export default function Clientes({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <Text variant='titleLarge' style={styles.title} >Lista de Clientes</Text>
+      <Text variant='titleLarge' style={styles.title} >Lista de Planos</Text>
 
       <FlatList
         style={styles.list}
-        data={clientes}
+        data={planos}
         renderItem={({ item }) => (
           <Card
             mode='outlined'
@@ -96,11 +96,11 @@ export default function Clientes({ navigation }) {
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('FormClientes', { acao: editarCliente, cliente: item })}>
+              <Button onPress={() => {navigation.navigate('form-planos', { acao: editarPlano, plano: item })}}> 
                 Editar
               </Button>
               <Button onPress={() => {
-                setClienteASerExcluida(item)
+                setPlanoASerExcluida(item)
                 showModal()
               }}>
                 Excluir
@@ -114,7 +114,7 @@ export default function Clientes({ navigation }) {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.push('FormClientes', { acao: adicionarCliente })}
+        onPress={() => navigation.navigate('form-planos', { acao: adicionarPlano })}
       />
 
 
@@ -127,7 +127,7 @@ export default function Clientes({ navigation }) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideModal}>Voltar</Button>
-            <Button onPress={handleExluirCliente}>Tenho Certeza</Button>
+            <Button onPress={handleExluirPlano}>Tenho Certeza</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

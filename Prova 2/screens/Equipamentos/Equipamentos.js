@@ -5,21 +5,21 @@ import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native
 import Toast from 'react-native-toast-message'
 
 
-export default function Clientes({ navigation }) {
+export default function Equipamentos({ navigation }) {
 
-  const [clientes, setClientes] = useState([])
+  const [equipamentos, setEquipamentos] = useState([])
   const [showModalExcluirUsuario, setShowModalExcluirUsuario] = useState(false)
-  const [clienteASerExcluida, setClienteASerExcluida] = useState(null)
+  const [equipamentoASerExcluida, setEquipamentoASerExcluida] = useState(null)
 
 
   useEffect(() => {
-    loadClientes()
+    loadEquipamentos()
   }, [])
 
-  async function loadClientes() {
-    const response = await AsyncStorage.getItem('clientes')
-    const clientesStorage = response ? JSON.parse(response) : []
-    setClientes(clientesStorage)
+  async function loadEquipamentos() {
+    const response = await AsyncStorage.getItem('equipamentos')
+    const equipamentosStorage = response ? JSON.parse(response) : []
+    setEquipamentos(equipamentosStorage)
   }
 
 
@@ -27,41 +27,41 @@ export default function Clientes({ navigation }) {
 
   const hideModal = () => setShowModalExcluirUsuario(false);
 
-  async function adicionarCliente(cliente) {
-    let novaListaClientes = clientes
-    novaListaClientes.push(cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes));
-    setClientes(novaListaClientes)
+  async function adicionarEquipamento(equipamento) {
+    let novaListaEquipamentos = equipamentos
+    novaListaEquipamentos.push(equipamento)
+    await AsyncStorage.setItem('equipamentos', JSON.stringify(novaListaEquipamentos));
+    setEquipamentos(novaListaEquipamentos)
   }
 
-  async function editarCliente(clienteAntiga, novosDados) {
+  async function editarEquipamento(equipamentoAntiga, novosDados) {
    
-    const novaListaClientes = clientes.map(cliente => {
-      if (cliente == clienteAntiga) {
+    const novaListaEquipamentos = equipamentos.map(equipamento => {
+      if (equipamento == equipamentoAntiga) {
         return novosDados
       } else {
-        return cliente
+        return equipamento
       }
     })
 
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+    await AsyncStorage.setItem('equipamentos', JSON.stringify(novaListaEquipamentos))
+    setEquipamentos(novaListaEquipamentos)
 
   }
 
-  async function excluirCliente(cliente) {
-    const novaListaClientes = clientes.filter(p => p !== cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+  async function excluirEquipamento(equipamento) {
+    const novaListaEquipamentos = equipamentos.filter(p => p !== equipamento)
+    await AsyncStorage.setItem('equipamentos', JSON.stringify(novaListaEquipamentos))
+    setEquipamentos(novaListaEquipamentos)
     Toast.show({
       type: 'success',
-      text1: 'Cliente excluida com sucesso!'
+      text1: 'Equipamento excluida com sucesso!'
     })
   }
 
-  function handleExluirCliente() {
-    excluirCliente(clienteASerExcluida)
-    setClienteASerExcluida(null)
+  function handleExluirEquipamento() {
+    excluirEquipamento(equipamentoASerExcluida)
+    setEquipamentoASerExcluida(null)
     hideModal()
   }
 
@@ -69,11 +69,11 @@ export default function Clientes({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <Text variant='titleLarge' style={styles.title} >Lista de Clientes</Text>
+      <Text variant='titleLarge' style={styles.title} >Lista de Equipamentos</Text>
 
       <FlatList
         style={styles.list}
-        data={clientes}
+        data={equipamentos}
         renderItem={({ item }) => (
           <Card
             mode='outlined'
@@ -96,11 +96,11 @@ export default function Clientes({ navigation }) {
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('FormClientes', { acao: editarCliente, cliente: item })}>
+              <Button onPress={() => {navigation.navigate('form-equipamentos', { acao: editarEquipamento, equipamento: item })}}> 
                 Editar
               </Button>
               <Button onPress={() => {
-                setClienteASerExcluida(item)
+                setEquipamentoASerExcluida(item)
                 showModal()
               }}>
                 Excluir
@@ -114,7 +114,7 @@ export default function Clientes({ navigation }) {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.push('FormClientes', { acao: adicionarCliente })}
+        onPress={() => navigation.navigate('form-equipamentos', { acao: adicionarEquipamento })}
       />
 
 
@@ -127,7 +127,7 @@ export default function Clientes({ navigation }) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideModal}>Voltar</Button>
-            <Button onPress={handleExluirCliente}>Tenho Certeza</Button>
+            <Button onPress={handleExluirEquipamento}>Tenho Certeza</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

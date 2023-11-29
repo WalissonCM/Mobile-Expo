@@ -5,21 +5,21 @@ import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native
 import Toast from 'react-native-toast-message'
 
 
-export default function Clientes({ navigation }) {
+export default function Instrutores({ navigation }) {
 
-  const [clientes, setClientes] = useState([])
+  const [instrutores, setInstrutores] = useState([])
   const [showModalExcluirUsuario, setShowModalExcluirUsuario] = useState(false)
-  const [clienteASerExcluida, setClienteASerExcluida] = useState(null)
+  const [instrutorASerExcluida, setInstrutorASerExcluida] = useState(null)
 
 
   useEffect(() => {
-    loadClientes()
+    loadInstrutores()
   }, [])
 
-  async function loadClientes() {
-    const response = await AsyncStorage.getItem('clientes')
-    const clientesStorage = response ? JSON.parse(response) : []
-    setClientes(clientesStorage)
+  async function loadInstrutores() {
+    const response = await AsyncStorage.getItem('instrutores')
+    const instrutoresStorage = response ? JSON.parse(response) : []
+    setInstrutores(instrutoresStorage)
   }
 
 
@@ -27,41 +27,41 @@ export default function Clientes({ navigation }) {
 
   const hideModal = () => setShowModalExcluirUsuario(false);
 
-  async function adicionarCliente(cliente) {
-    let novaListaClientes = clientes
-    novaListaClientes.push(cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes));
-    setClientes(novaListaClientes)
+  async function adicionarInstrutor(instrutor) {
+    let novaListaInstrutores = instrutores
+    novaListaInstrutores.push(instrutor)
+    await AsyncStorage.setItem('instrutores', JSON.stringify(novaListaInstrutores));
+    setInstrutores(novaListaInstrutores)
   }
 
-  async function editarCliente(clienteAntiga, novosDados) {
+  async function editarInstrutor(instrutorAntiga, novosDados) {
    
-    const novaListaClientes = clientes.map(cliente => {
-      if (cliente == clienteAntiga) {
+    const novaListaInstrutores = instrutores.map(instrutor => {
+      if (instrutor == instrutorAntiga) {
         return novosDados
       } else {
-        return cliente
+        return instrutor
       }
     })
 
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+    await AsyncStorage.setItem('instrutores', JSON.stringify(novaListaInstrutores))
+    setInstrutores(novaListaInstrutores)
 
   }
 
-  async function excluirCliente(cliente) {
-    const novaListaClientes = clientes.filter(p => p !== cliente)
-    await AsyncStorage.setItem('clientes', JSON.stringify(novaListaClientes))
-    setClientes(novaListaClientes)
+  async function excluirInstrutor(instrutor) {
+    const novaListaInstrutores = instrutores.filter(p => p !== instrutor)
+    await AsyncStorage.setItem('instrutores', JSON.stringify(novaListaInstrutores))
+    setInstrutores(novaListaInstrutores)
     Toast.show({
       type: 'success',
-      text1: 'Cliente excluida com sucesso!'
+      text1: 'Instrutor excluida com sucesso!'
     })
   }
 
-  function handleExluirCliente() {
-    excluirCliente(clienteASerExcluida)
-    setClienteASerExcluida(null)
+  function handleExluirInstrutor() {
+    excluirInstrutor(instrutorASerExcluida)
+    setInstrutorASerExcluida(null)
     hideModal()
   }
 
@@ -69,11 +69,11 @@ export default function Clientes({ navigation }) {
   return (
     <View style={styles.container}>
 
-      <Text variant='titleLarge' style={styles.title} >Lista de Clientes</Text>
+      <Text variant='titleLarge' style={styles.title} >Lista de Instrutores</Text>
 
       <FlatList
         style={styles.list}
-        data={clientes}
+        data={instrutores}
         renderItem={({ item }) => (
           <Card
             mode='outlined'
@@ -96,11 +96,11 @@ export default function Clientes({ navigation }) {
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('FormClientes', { acao: editarCliente, cliente: item })}>
+              <Button onPress={() => {navigation.navigate('form-instrutores', {acao : editarInstrutor, instrutor: item })}}> 
                 Editar
               </Button>
               <Button onPress={() => {
-                setClienteASerExcluida(item)
+                setInstrutorASerExcluida(item)
                 showModal()
               }}>
                 Excluir
@@ -114,7 +114,7 @@ export default function Clientes({ navigation }) {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.push('FormClientes', { acao: adicionarCliente })}
+        onPress={() => navigation.navigate('form-instrutores', {acao : adicionarInstrutor})}
       />
 
 
@@ -127,7 +127,7 @@ export default function Clientes({ navigation }) {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideModal}>Voltar</Button>
-            <Button onPress={handleExluirCliente}>Tenho Certeza</Button>
+            <Button onPress={handleExluirInstrutor}>Tenho Certeza</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -96,9 +96,8 @@ export default function Clientes({ navigation }) {
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('FormClientes', { acao: editarCliente, cliente: item })}>
-                Editar
-              </Button>
+              <Button onPress={() => {navigation.navigate('form-clientes', { acao: editarCliente, cliente: item })}}/>
+                Editar 
               <Button onPress={() => {
                 setClienteASerExcluida(item)
                 showModal()
@@ -114,7 +113,7 @@ export default function Clientes({ navigation }) {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.push('FormClientes', { acao: adicionarCliente })}
+        onPress={() => navigation.navigate('form-clientes', { acao: adicionarCliente })}
       />
 
 

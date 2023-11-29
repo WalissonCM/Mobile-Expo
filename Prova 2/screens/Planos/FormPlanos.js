@@ -5,9 +5,9 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import * as Yup from 'yup'
 
-export default function FormClientes({ navigation, route }) {
+export default function FormPlanos({ navigation, route }) {
 
-    const { acao, cliente: clienteAntiga } = route.params
+    const { acao, plano: planoAntiga } = route.params
 
     const validationSchema = Yup.object().shape({
         cpf: Yup.string().min(11, 'CPF deve conter 11 digitos').required('Campo obrigatório!'),
@@ -20,27 +20,27 @@ export default function FormClientes({ navigation, route }) {
     useEffect(() => {
 
 
-        if (clienteAntiga) {
-            setNome(clienteAntiga.nome)
-            setIdade(clienteAntiga.idade)
-            setPeso(clienteAntiga.peso)
-            setAltura(clienteAntiga.altura)
+        if (planoAntiga) {
+            setNome(planoAntiga.nome)
+            setIdade(planoAntiga.idade)
+            setPeso(planoAntiga.peso)
+            setAltura(planoAntiga.altura)
         }
 
     }, [])
 
 
-    function salvar(novaCliente) {
+    function salvar(novaPlano) {
 
-        if (clienteAntiga) {
-            acao(clienteAntiga, novaCliente)
+        if (planoAntiga) {
+            acao(planoAntiga, novaPlano)
         } else {
-            acao(novaCliente)
+            acao(novaPlano)
         }
 
         Toast.show({
             type: 'success',
-            text1: 'Cliente salva com sucesso!'
+            text1: 'Plano salva com sucesso!'
         })
 
         navigation.goBack()
@@ -50,16 +50,16 @@ export default function FormClientes({ navigation, route }) {
     return (
         <View style={styles.container}>
 
-            <Text variant='titleLarge' style={styles.title} >{clienteAntiga ? 'Editar Cliente' : 'Adicionar Cliente'}</Text>
+            <Text variant='titleLarge' style={styles.title} >{planoAntiga ? 'Editar Plano' : 'Adicionar Plano'}</Text>
 
 
             <Formik
                 initialValues={{
-                    cpf: '' || clienteAntiga?.cpf,
-                    nome: '' || clienteAntiga?.nome,
-                    idade: '' || clienteAntiga?.idade,
-                    peso: '' || clienteAntiga?.peso,
-                    altura: '' || clienteAntiga?.altura
+                    cpf: '' || planoAntiga?.cpf,
+                    nome: '' || planoAntiga?.nome,
+                    idade: '' || planoAntiga?.idade,
+                    peso: '' || planoAntiga?.peso,
+                    altura: '' || planoAntiga?.altura
                 }}
                 validationSchema={validationSchema}
                 onSubmit={values => salvar(values)}

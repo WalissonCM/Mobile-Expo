@@ -5,9 +5,9 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import * as Yup from 'yup'
 
-export default function FormClientes({ navigation, route }) {
+export default function FormEquipamentos({ navigation, route }) {
 
-    const { acao, cliente: clienteAntiga } = route.params
+    const { acao, equipamento: equipamentoAntiga } = route.params
 
     const validationSchema = Yup.object().shape({
         cpf: Yup.string().min(11, 'CPF deve conter 11 digitos').required('Campo obrigatório!'),
@@ -20,27 +20,27 @@ export default function FormClientes({ navigation, route }) {
     useEffect(() => {
 
 
-        if (clienteAntiga) {
-            setNome(clienteAntiga.nome)
-            setIdade(clienteAntiga.idade)
-            setPeso(clienteAntiga.peso)
-            setAltura(clienteAntiga.altura)
+        if (equipamentoAntiga) {
+            setNome(equipamentoAntiga.nome)
+            setIdade(equipamentoAntiga.idade)
+            setPeso(equipamentoAntiga.peso)
+            setAltura(equipamentoAntiga.altura)
         }
 
     }, [])
 
 
-    function salvar(novaCliente) {
+    function salvar(novaEquipamento) {
 
-        if (clienteAntiga) {
-            acao(clienteAntiga, novaCliente)
+        if (equipamentoAntiga) {
+            acao(equipamentoAntiga, novaEquipamento)
         } else {
-            acao(novaCliente)
+            acao(novaEquipamento)
         }
 
         Toast.show({
             type: 'success',
-            text1: 'Cliente salva com sucesso!'
+            text1: 'Equipamento salva com sucesso!'
         })
 
         navigation.goBack()
@@ -50,16 +50,16 @@ export default function FormClientes({ navigation, route }) {
     return (
         <View style={styles.container}>
 
-            <Text variant='titleLarge' style={styles.title} >{clienteAntiga ? 'Editar Cliente' : 'Adicionar Cliente'}</Text>
+            <Text variant='titleLarge' style={styles.title} >{equipamentoAntiga ? 'Editar Equipamento' : 'Adicionar Equipamento'}</Text>
 
 
             <Formik
                 initialValues={{
-                    cpf: '' || clienteAntiga?.cpf,
-                    nome: '' || clienteAntiga?.nome,
-                    idade: '' || clienteAntiga?.idade,
-                    peso: '' || clienteAntiga?.peso,
-                    altura: '' || clienteAntiga?.altura
+                    cpf: '' || equipamentoAntiga?.cpf,
+                    nome: '' || equipamentoAntiga?.nome,
+                    idade: '' || equipamentoAntiga?.idade,
+                    peso: '' || equipamentoAntiga?.peso,
+                    altura: '' || equipamentoAntiga?.altura
                 }}
                 validationSchema={validationSchema}
                 onSubmit={values => salvar(values)}
