@@ -5,7 +5,7 @@ import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native
 import Toast from 'react-native-toast-message'
 
 
-export default function Clientes({ navigation }) {
+export default function Clientes({ navigation}) {
 
   const [clientes, setClientes] = useState([])
   const [showModalExcluirUsuario, setShowModalExcluirUsuario] = useState(false)
@@ -84,20 +84,14 @@ export default function Clientes({ navigation }) {
             >
               <View style={{ flex: 1 }}>
                 <Text variant='titleMedium'>{item?.nome}</Text>
-                <Text variant='bodyLarge'>Idade: {item?.idade}</Text>
-                <Text variant='bodyLarge'>Altura: {item?.altura} cm</Text>
-                <Text variant='bodyLarge'>Peso: {item.peso} kg</Text>
+                <Text variant='bodyLarge'>Cpf: {item?.cpf}</Text>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text variant='titleMedium'>IMC</Text>
-                <Text variant='bodyLarge'>{getImc(item)}</Text>
-              </View>
-
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => {navigation.navigate('form-clientes', { acao: editarCliente, cliente: item })}}/>
+              <Button onPress={() => navigation.push('form-clientes', { acao: editarCliente, cliente: item })}>
                 Editar 
+              </Button>
               <Button onPress={() => {
                 setClienteASerExcluida(item)
                 showModal()
@@ -108,16 +102,13 @@ export default function Clientes({ navigation }) {
           </Card>
         )}
       />
-
-      
+  
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => navigation.navigate('form-clientes', { acao: adicionarCliente })}
+        onPress={() => navigation.push('form-clientes', { acao: adicionarCliente })}
       />
 
-
-      
       <Portal>
         <Dialog visible={showModalExcluirUsuario} onDismiss={hideModal}>
           <Dialog.Title>Atenção!</Dialog.Title>

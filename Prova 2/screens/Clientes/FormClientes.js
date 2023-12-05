@@ -1,6 +1,7 @@
 import { Formik } from 'formik'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { TextInputMask } from 'react-native-masked-text'
 import { Button, Text, TextInput } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import * as Yup from 'yup'
@@ -8,25 +9,20 @@ import * as Yup from 'yup'
 export default function FormClientes({ navigation, route }) {
 
     const { acao, cliente: clienteAntiga } = route.params
+    const [nome, setNome] = useState('')
+    const [cpf, setCpf] = useState('')
+
 
     const validationSchema = Yup.object().shape({
-        cpf: Yup.string().min(11, 'CPF deve conter 11 digitos').required('Campo obrigatório!'),
-        nome: Yup.string().required(),
-        idade: Yup.string().required(),
-        peso: Yup.string().required(),
-        altura: Yup.string().required(),
+        nome: Yup.string().min(10, 'Nome deve conter pelo menos 10 digitos').required('Campo obrigatório!'),
+        cpf: Yup.string().min(11, 'CPF deve conter 11 digitos').max(14).required('Campo obrigatório!'),  
     })
 
     useEffect(() => {
-
-
         if (clienteAntiga) {
             setNome(clienteAntiga.nome)
-            setIdade(clienteAntiga.idade)
-            setPeso(clienteAntiga.peso)
-            setAltura(clienteAntiga.altura)
+            setCpf(clienteAntiga.cpf)
         }
-
     }, [])
 
 
@@ -55,11 +51,9 @@ export default function FormClientes({ navigation, route }) {
 
             <Formik
                 initialValues={{
-                    cpf: '' || clienteAntiga?.cpf,
                     nome: '' || clienteAntiga?.nome,
-                    idade: '' || clienteAntiga?.idade,
-                    peso: '' || clienteAntiga?.peso,
-                    altura: '' || clienteAntiga?.altura
+                    cpf: '' || clienteAntiga?.cpf,
+                    
                 }}
                 validationSchema={validationSchema}
                 onSubmit={values => salvar(values)}
@@ -69,58 +63,33 @@ export default function FormClientes({ navigation, route }) {
 
                         <View style={styles.inputContainer}>
 
-
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='CPF'
-                                value={values.cpf}
-                                onChangeText={handleChange('cpf')}
-                                onBlur={handleBlur('cpf')}
-                                error={errors.cpf ? true : false}
-                                keyboardType='numeric'
-                            />
-
-                            {touched.cpf && errors.cpf && (
-                                <Text style={{ color: 'red', textAlign: 'center' }}>{errors.cpf}</Text>
-                            )}
-
-                            <TextInput
+                           <TextInput
                                 style={styles.input}
                                 mode='outlined'
                                 label='Nome'
                                 value={values.nome}
                                 onChangeText={handleChange('nome')}
                                 onBlur={handleBlur('nome')}
-                            />
+                                error={touched.nome && errors.nome}
+                             />
+                            
+                            {(touched.nome && errors.nome) && <Text style={{ color: 'red' }}>{errors.nome}</Text>}
 
+                           
                             <TextInput
                                 style={styles.input}
                                 mode='outlined'
-                                label='Idade'
-                                value={values.idade}
-                                onChangeText={handleChange('idade')}
-                                onBlur={handleBlur('idade')}
+                                label='CPF'
+                                value={values.cpf}
+                                placeholder='000.000.000-00'
+                                onChangeText={handleChange('cpf')}
+                                onBlur={handleBlur('cpf')}
+                                error={touched.cpf && errors.cpf}
+                                keyboardType='numeric'
+                                render={props => <TextInputMask {...props} type={'cpf'} />}
                             />
 
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='Peso'
-                                value={values.peso}
-                                onChangeText={handleChange('peso')}
-                                onBlur={handleBlur('peso')}
-                            />
-
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='Altura'
-                                value={values.altura}
-                                onChangeText={handleChange('altura')}
-                                onBlur={handleBlur('altura')}
-                            />
-
+                             {(touched.cpf && errors.cpf) && <Text style={{ color: 'red' }}>{errors.cpf}</Text>}
 
                         </View>
                         <View style={styles.buttonContainer}>
