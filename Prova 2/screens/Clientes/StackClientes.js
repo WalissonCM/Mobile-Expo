@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import Clientes from '../Clientes/Clientes';
-import FormClientes from '../Clientes/FormClientes';
+import Clientes from './Clientes';
+import FormClientes from './FormClientes';
 
 const Stack = createNativeStackNavigator();
-export default function StackRoutes() {
+export default function StackClientes() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="clientes" component={Clientes} />

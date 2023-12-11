@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native-paper'
+import { Button, Card, Dialog, FAB, Portal, Text } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 
 
@@ -83,16 +83,17 @@ export default function Clientes({ navigation}) {
               style={styles.cardContent}
             >
               <View style={{ flex: 1 }}>
-                <Text variant='titleMedium'>{item?.nome}</Text>
-                <Text variant='bodyLarge'>Cpf: {item?.cpf}</Text>
+                <Text style={{color:'white'}} variant='titleLarge'>{item?.nome}</Text>
+                <Text style={{color:'white'}} variant='bodyLarge'>Cpf: {item?.cpf}</Text>
+                <Text style={{color:'white'}} variant='bodyLarge'>Telefone: {item?.telefone}</Text>
               </View>
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => navigation.push('form-clientes', { acao: editarCliente, cliente: item })}>
+              <Button textColor='black' onPress={() => navigation.push('form-clientes', { acao: editarCliente, cliente: item })}>
                 Editar 
               </Button>
-              <Button onPress={() => {
+              <Button style={{ backgroundColor: 'red'}} onPress={() => {
                 setClienteASerExcluida(item)
                 showModal()
               }}>
@@ -105,6 +106,8 @@ export default function Clientes({ navigation}) {
   
       <FAB
         icon="plus"
+        color='white'
+        theme={{ colors: { primaryContainer:'#000'} }}
         style={styles.fab}
         onPress={() => navigation.push('form-clientes', { acao: adicionarCliente })}
       />
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flexDirection: 'row',
-    backgroundColor: MD3Colors.primary80,
+    backgroundColor: '#808080',
     borderWidth: 2,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { Button, Card, Dialog, FAB, MD3Colors, Portal, Text } from 'react-native-paper'
+import { Button, Card, Dialog, FAB, Portal, Text } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 
 
@@ -82,24 +82,19 @@ export default function Equipamentos({ navigation }) {
             <Card.Content
               style={styles.cardContent}
             >
-              <View style={{ flex: 1 }}>
-                <Text variant='titleMedium'>{item?.nome}</Text>
-                <Text variant='bodyLarge'>Idade: {item?.idade}</Text>
-                <Text variant='bodyLarge'>Altura: {item?.altura} cm</Text>
-                <Text variant='bodyLarge'>Peso: {item.peso} kg</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text variant='titleMedium'>IMC</Text>
-                <Text variant='bodyLarge'>{getImc(item)}</Text>
+              <View style={{ flex: 1,}}>
+                <Text style={{color:'white'}} variant='titleLarge'>{item?.nome}</Text>
+                <Text style={{color:'white'}} variant='bodyLarge'>Tipo: {item?.tipo}</Text>
+                <Text style={{color:'white'}} variant='bodyLarge'>Data: {item?.data}</Text>
               </View>
 
 
             </Card.Content>
             <Card.Actions>
-              <Button onPress={() => {navigation.navigate('form-equipamentos', { acao: editarEquipamento, equipamento: item })}}> 
+              <Button textColor='black' onPress={() => {navigation.navigate('form-equipamentos', { acao: editarEquipamento, equipamento: item })}}> 
                 Editar
               </Button>
-              <Button onPress={() => {
+              <Button style={{ backgroundColor: 'red'}} onPress={() => {
                 setEquipamentoASerExcluida(item)
                 showModal()
               }}>
@@ -112,7 +107,9 @@ export default function Equipamentos({ navigation }) {
 
       
       <FAB
-        icon="plus"
+        icon='plus'
+        color='white'
+        theme={{ colors: { primaryContainer:'black'} }}
         style={styles.fab}
         onPress={() => navigation.navigate('form-equipamentos', { acao: adicionarEquipamento })}
       />
@@ -160,7 +157,7 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flexDirection: 'row',
-    backgroundColor: MD3Colors.primary80,
+    backgroundColor:'#808080',
     borderWidth: 2,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

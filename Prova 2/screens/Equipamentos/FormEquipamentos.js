@@ -1,30 +1,33 @@
 import { Formik } from 'formik'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { TextInputMask } from 'react-native-masked-text'
 import { Button, Text, TextInput } from 'react-native-paper'
 import Toast from 'react-native-toast-message'
 import * as Yup from 'yup'
 
+
 export default function FormEquipamentos({ navigation, route }) {
 
+   
+
     const { acao, equipamento: equipamentoAntiga } = route.params
+    const [nome, setNome] = useState('')
+    const [tipo, setTipo] = useState('')
+    const [data, setData ] = useState('')
 
     const validationSchema = Yup.object().shape({
-        cpf: Yup.string().min(11, 'CPF deve conter 11 digitos').required('Campo obrigatório!'),
-        nome: Yup.string().required(),
-        idade: Yup.string().required(),
-        peso: Yup.string().required(),
-        altura: Yup.string().required(),
+        nome: Yup.string().required('Campo obrigatório!'),
+        tipo: Yup.string().required('Campo obrigatório!'),
+        data: Yup.string().required('Campo obrigatório!'),
     })
 
     useEffect(() => {
 
-
         if (equipamentoAntiga) {
             setNome(equipamentoAntiga.nome)
-            setIdade(equipamentoAntiga.idade)
-            setPeso(equipamentoAntiga.peso)
-            setAltura(equipamentoAntiga.altura)
+            setTipo(equipamentoAntiga.tipo)
+            setData(equipamentoAntiga.data)
         }
 
     }, [])
@@ -55,11 +58,9 @@ export default function FormEquipamentos({ navigation, route }) {
 
             <Formik
                 initialValues={{
-                    cpf: '' || equipamentoAntiga?.cpf,
                     nome: '' || equipamentoAntiga?.nome,
-                    idade: '' || equipamentoAntiga?.idade,
-                    peso: '' || equipamentoAntiga?.peso,
-                    altura: '' || equipamentoAntiga?.altura
+                    tipo: '' || equipamentoAntiga?.tipo,
+                    data: '' || equipamentoAntiga?.data,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={values => salvar(values)}
@@ -69,57 +70,48 @@ export default function FormEquipamentos({ navigation, route }) {
 
                         <View style={styles.inputContainer}>
 
-
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='CPF'
-                                value={values.cpf}
-                                onChangeText={handleChange('cpf')}
-                                onBlur={handleBlur('cpf')}
-                                error={errors.cpf ? true : false}
-                                keyboardType='numeric'
-                            />
-
-                            {touched.cpf && errors.cpf && (
-                                <Text style={{ color: 'red', textAlign: 'center' }}>{errors.cpf}</Text>
-                            )}
-
-                            <TextInput
+                            
+                           <TextInput
                                 style={styles.input}
                                 mode='outlined'
                                 label='Nome'
                                 value={values.nome}
                                 onChangeText={handleChange('nome')}
                                 onBlur={handleBlur('nome')}
-                            />
+                                error={touched.nome && errors.nome}
+                             />
+                            
+                            {(touched.nome && errors.nome) && <Text style={{ color: 'red' }}>{errors.nome}</Text>}
+
+                            
+                           <TextInput
+                                style={styles.input}
+                                mode='outlined'
+                                label='Tipo'
+                                value={values.tipo}
+                                onChangeText={handleChange('tipo')}
+                                onBlur={handleBlur('tipo')}
+                                error={touched.tipo && errors.tipo}
+                             />
+                            
+                            {(touched.tipo && errors.tipo) && <Text style={{ color: 'red' }}>{errors.tipo}</Text>}
 
                             <TextInput
                                 style={styles.input}
                                 mode='outlined'
-                                label='Idade'
-                                value={values.idade}
-                                onChangeText={handleChange('idade')}
-                                onBlur={handleBlur('idade')}
-                            />
+                                label='Data'
+                                value={values.data}
+                                onChangeText={handleChange('data')}
+                                onBlur={handleBlur('data')}
+                                error={touched.data && errors.data}
+                                keyboardType='numeric'
+                                render={props => <TextInputMask {...props} type={'datetime'} />}
+                                    
+                
+                             />
+                            
+                            {(touched.data && errors.data) && <Text style={{ color: 'red' }}>{errors.data}</Text>}
 
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='Peso'
-                                value={values.peso}
-                                onChangeText={handleChange('peso')}
-                                onBlur={handleBlur('peso')}
-                            />
-
-                            <TextInput
-                                style={styles.input}
-                                mode='outlined'
-                                label='Altura'
-                                value={values.altura}
-                                onChangeText={handleChange('altura')}
-                                onBlur={handleBlur('altura')}
-                            />
 
 
                         </View>
@@ -127,7 +119,8 @@ export default function FormEquipamentos({ navigation, route }) {
 
                             <Button
                                 style={styles.button}
-                                mode='contained-tonal'
+                                mode='outlined'
+                                textColor='black'
                                 onPress={() => navigation.goBack()}
                             >
                                 Voltar
@@ -135,7 +128,8 @@ export default function FormEquipamentos({ navigation, route }) {
 
                             <Button
                                 style={styles.button}
-                                mode='contained'
+                                buttonColor='#65b307'
+                                textColor='white'
                                 onPress={handleSubmit}
                             >
                                 Salvar
