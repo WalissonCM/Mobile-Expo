@@ -2,13 +2,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import { PaperProvider } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
-import DrawerRoutes from './screens/Routes/Drawer.Routes';
+import StackProdutos from './screens/Produtos/StackProdutos';
+
 
 export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <DrawerRoutes />
+        <StackProdutos/>
       </NavigationContainer>
       <Toast />
     </PaperProvider>
